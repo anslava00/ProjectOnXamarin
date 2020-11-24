@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProjectDisplayLogin.DirectoryadminViewModel.AdminPage">
+    <StackLayout>
+        <Image Source="https://maxplayers.net/files/news_imgs/1513445269.jpg" />
+    </StackLayout>
+</ContentPage>
