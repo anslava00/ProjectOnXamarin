@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Common;
 using Npgsql;
+using ProjectDisplayLogin.Model;
 using ProjectDisplayLogin.DirectoryadminViewModel;
 using ProjectDisplayLogin.DirectoryUserViewModel;
 using Xamarin.Forms;
@@ -41,29 +43,27 @@ namespace ProjectDisplayLogin
                 await DisplayAlert("Ошибка ввода пароля", "Введите пароль", "Ок");
                 return;
             }
-            
-            NpgsqlConnection Connect = new NpgsqlConnection("Server=10.0.2.2;" +
-                                                            "Port=5432; " +
-                                                            "User Id=postgres;" +
-                                                            "Password=Ctvtqrf55@;" +
-                                                            "Database=University;");
-             string SqlRequest = "SELECT * FROM public.students WHERE login = '" + LoginEntry.Text + "';";
-            
-             NpgsqlCommand npgsql = new NpgsqlCommand(SqlRequest, Connect);
-             Connect.Open();
+
+            Connection.SqlRequest = "SELECT * FROM public.students WHERE login = '" + LoginEntry.Text + "';";
+            NpgsqlCommand npgsql = new NpgsqlCommand(Connection.SqlRequest, Connection.Connect);
+             try{   
+                 Connection.Connect.Open();
+             }catch(Exception ex){ 
+                 await DisplayAlert("Ошибка подключения", "Нет подключения к бд", "Ок");        
+             }                                                                                                                                                                                                                                                                                                                                                                                                      
             
              DbDataReader Reader = npgsql.ExecuteReader();
              if (!Reader.HasRows)
              {
                  await DisplayAlert("Ошибка логина", "Не существует такого пользователя ", "Ок");
-                 Connect.Close();
+                 Connection.Connect.Close();
                  return;
              }
              Reader.Read();
              if(Reader.GetValue(2).ToString() != PasswordEntry.Text)
              {
                  await DisplayAlert("Ошибка Пароля", "Не правильный пароль ", "Ок");
-                 Connect.Close();
+                 Connection.Connect.Close();
                  return;
              }
              else
@@ -72,7 +72,7 @@ namespace ProjectDisplayLogin
                  NavigationPage.SetHasNavigationBar(UserPage, false);
                  await Navigation.PushAsync(UserPage);
              }
-            Connect.Close();
+             Connection.Connect.Close();
         } 
     }
 }

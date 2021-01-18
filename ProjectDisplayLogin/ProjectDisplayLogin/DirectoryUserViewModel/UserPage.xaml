@@ -11,6 +11,7 @@
             <Label x:Name = "LabelSecondName"></Label>
             <Label Text = "Отчество" FontSize = "Large" />
             <Label x:Name = "LabelLastName"></Label>
+            <Button Text="Расписание" Clicked="Graphik"></Button>
             <Button Text="Exit" Clicked="ExitButtonClicked"></Button>
         </StackLayout>
     </ContentPage.Content>
